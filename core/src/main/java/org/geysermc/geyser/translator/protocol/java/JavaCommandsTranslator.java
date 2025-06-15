@@ -436,7 +436,9 @@ public class JavaCommandsTranslator extends PacketTranslator<ClientboundCommands
                             values.put(paramNode.getName(), Set.of());
 
                             // Re-create the command using the updated values
-                            CommandEnumData enumData = new CommandEnumData(enumParamInfo.getParamData().getEnumData().getName(), values, false);
+                            // CommandEnumData must have unique name to avoid https://github.com/GeyserMC/Geyser/issues/3411
+                            // TODO: Use SUPPRESS_ENUM_AUTOCOMPLETION to hide generated enum name and show CommandEnumData values instead
+                            CommandEnumData enumData = new CommandEnumData("enum" + String.valueOf(Objects.hashCode(values)).replace("-", "_"), values, false);
                             CommandParamData commandParamData = new CommandParamData();
                             commandParamData.setName(enumParamInfo.getParamData().getName());
                             commandParamData.setOptional(this.paramNode.isExecutable());
